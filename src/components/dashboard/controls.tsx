@@ -171,8 +171,8 @@ export function DashboardControls({
           </h2>
         </div>
       </SidebarHeader>
-      <SidebarContent className="p-2 flex flex-col h-full min-h-screen">
-        <div className="flex-1 overflow-y-auto">
+      <SidebarContent className="p-2 flex flex-col h-full">
+        <div className="flex-1 overflow-y-auto space-y-4">
           <Card className="shadow-none border-dashed">
               <CardHeader className="p-4">
                   <CardTitle className="text-base flex items-center gap-2">
@@ -254,7 +254,7 @@ export function DashboardControls({
 
         </div>
         {/* Chatbot Assistant at the bottom of the sidebar */}
-        <div className="mt-4">
+        <div className="mt-auto">
           <ChatbotAssistant />
         </div>
       </SidebarContent>

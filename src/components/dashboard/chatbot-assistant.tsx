@@ -20,16 +20,14 @@ export function ChatbotAssistant() {
     setInput("");
     setLoading(true);
     try {
-      // TODO: Replace with real AI API call
-      // Fallback: echo or quota error message
-      const quotaExceeded = false; // Set true to simulate quota error
-      let botText = "";
-      if (quotaExceeded) {
-        botText = "Sorry, the AI assistant is temporarily unavailable due to quota limits. Please try again later.";
-      } else {
-        botText = `You said: "${userMsg.text}" (AI response placeholder)`;
-      }
-      setMessages((msgs) => [...msgs, { sender: "bot", text: botText }]);
+      const res = await fetch('/api/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: userMsg.text })
+      });
+      const data = await res.json();
+      const botText = data.reply || data.error || 'No response';
+      setMessages((msgs) => [...msgs, { sender: 'bot', text: botText }]);
     } finally {
       setLoading(false);
       inputRef.current?.focus();
@@ -37,11 +35,11 @@ export function ChatbotAssistant() {
   };
 
   return (
-    <Card className="flex flex-col h-full max-h-[500px]">
-      <CardHeader>
-        <CardTitle>AI Assistant</CardTitle>
+    <Card className="flex flex-col h-[400px] shadow-none border-dashed">
+      <CardHeader className="p-4">
+        <CardTitle className="text-base">AI Assistant</CardTitle>
       </CardHeader>
-      <CardContent className="flex-1 overflow-y-auto space-y-2 mb-2">
+      <CardContent className="flex-1 overflow-y-auto space-y-2 mb-2 p-4 pt-0">
         {messages.length === 0 && (
           <div className="text-muted-foreground text-sm">Ask me anything about water quality, indices, or this dashboard!</div>
         )}
@@ -52,7 +50,7 @@ export function ChatbotAssistant() {
         ))}
       </CardContent>
       <form
-        className="flex gap-2 p-2 border-t"
+        className="flex gap-2 p-4 border-t"
         onSubmit={e => {
           e.preventDefault();
           sendMessage();

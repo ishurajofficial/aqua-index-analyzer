@@ -10,7 +10,7 @@ import {
   SidebarInset,
 } from "@/components/ui/sidebar";
 import { DashboardHeader } from "@/components/dashboard/header";
-import { DashboardControls } from "@/components/dashboard/dashboard-controls";
+import { DashboardControls } from "@/components/dashboard/controls";
 import { DashboardStats } from "@/components/dashboard/dashboard-stats";
 import { DataFilters } from "@/components/dashboard/data-filters";
 import { ExportOptions } from "@/components/dashboard/export-options";
@@ -390,69 +390,65 @@ This report was generated using the ${standard.toUpperCase()} standard for heavy
   }
 
   return (
-    <div className="min-h-screen flex">
-      <SidebarProvider>
-        <Sidebar
-          collapsible="icon"
-          variant="sidebar"
-          className="border-r-0 md:border-r w-72 bg-background z-40"
-        >
-          <div className="flex flex-col h-full p-4">
-            <DashboardControls
-              selectedStandard={selectedStandard}
-              onStandardChange={setSelectedStandard}
-              onFileUpload={handleFileUpload}
-              onExport={handleExport}
-              isExporting={exporting}
-            />
-          </div>
-        </Sidebar>
-        <SidebarInset className="bg-background">
-          <DashboardHeader />
-          <main className="min-h-[calc(100vh-3.5rem)] p-4 md:p-6 lg:p-8 space-y-6">
-            {/* Dashboard Stats */}
-            <DashboardStats data={filteredData} loading={loadingData} />
-            {/* Summary Card */}
-            <SummaryCard summary={summary} loading={loadingData} />
-            {/* Data Filters */}
-            <DataFilters 
-              data={processedData} 
-              onFilteredData={setFilteredData}
-            />
-            {/* Main Content Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Left Column - Charts */}
-              <div className="lg:col-span-2">
-                <PollutionCharts data={filteredData} selectedLocation={selectedLocation} />
-              </div>
-              {/* Right Column - Export Options and Map */}
-              <div className="lg:col-span-1 space-y-6">
-                <ExportOptions
-                  data={filteredData}
-                  summary={summary}
-                  onExport={handleExport}
-                  isExporting={exporting}
-                />
-                <GeographicMap
-                  data={filteredData}
-                  selectedLocation={selectedLocation}
-                  onLocationSelect={setSelectedLocation}
-                />
-              </div>
+    <SidebarProvider>
+      <Sidebar
+        collapsible="icon"
+        variant="sidebar"
+        className="border-r-0 md:border-r w-72 bg-background z-40"
+      >
+        <DashboardControls
+          selectedStandard={selectedStandard}
+          onStandardChange={setSelectedStandard}
+          onFileUpload={handleFileUpload}
+          onExport={handleExport}
+          isExporting={exporting}
+        />
+      </Sidebar>
+      <SidebarInset className="bg-background">
+        <DashboardHeader />
+        <main className="min-h-[calc(100vh-3.5rem)] p-4 md:p-6 lg:p-8 space-y-6">
+          {/* Dashboard Stats */}
+          <DashboardStats data={filteredData} loading={loadingData} />
+          {/* Summary Card */}
+          <SummaryCard summary={summary} loading={loadingData} />
+          {/* Data Filters */}
+          <DataFilters 
+            data={processedData} 
+            onFilteredData={setFilteredData}
+          />
+          {/* Main Content Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Left Column - Charts */}
+            <div className="lg:col-span-2">
+              <PollutionCharts data={filteredData} selectedLocation={selectedLocation} />
             </div>
-            {/* Comparison Tool - Full Width */}
-            <ComparisonTool data={filteredData} />
-            {/* Results Table - Full Width */}
-            <div className="mt-6">
-              <ResultsTable
+            {/* Right Column - Export Options and Map */}
+            <div className="lg:col-span-1 space-y-6">
+              <ExportOptions
                 data={filteredData}
-                onRowClick={(row) => setSelectedLocation(row)}
-                selectedRowId={selectedLocation?.id}
+                summary={summary}
+                onExport={handleExport}
+                isExporting={exporting}
+              />
+              <GeographicMap
+                data={filteredData}
+                selectedLocation={selectedLocation}
+                onLocationSelect={setSelectedLocation}
               />
             </div>
-          </main>
-        </SidebarInset>
-      </SidebarProvider>
-    </div>
+          </div>
+          {/* Comparison Tool - Full Width */}
+          <ComparisonTool data={filteredData} />
+          {/* Results Table - Full Width */}
+          <div className="mt-6">
+            <ResultsTable
+              data={filteredData}
+              onRowClick={(row) => setSelectedLocation(row)}
+              selectedRowId={selectedLocation?.id}
+            />
+          </div>
+        </main>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

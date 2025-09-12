@@ -9,7 +9,7 @@
  * - CategorizePollutionRiskOutput - The return type for the categorizePollutionRisk function.
  */
 
-import {ai} from '@/ai/genkit';
+import {ai, aiEnabled} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const AssessmentSchema = z.object({
@@ -51,6 +51,27 @@ const CategorizePollutionRiskOutputSchema = z.object({
 export type CategorizePollutionRiskOutput = z.infer<typeof CategorizePollutionRiskOutputSchema>;
 
 export async function categorizePollutionRisk(input: CategorizePollutionRiskInput): Promise<CategorizePollutionRiskOutput> {
+  if (!aiEnabled) {
+    // Local deterministic fallback based on thresholds
+    const limits = input.useWhoLimits ? input.whoPermissibleLimits : input.bisPermissibleLimits;
+    const results = input.assessments.map(a => {
+      const overHpi = a.hpi / limits.hpi;
+      const overHei = a.hei / limits.hei;
+      const overCf = a.cf / limits.cf;
+      const overPli = a.pli / limits.pli;
+      const overs = [overHpi, overHei, overCf, overPli];
+      const maxOver = Math.max(...overs);
+      const numAbove = overs.filter(v => v > 1).length;
+      let riskLevel: 'Safe' | 'Moderate' | 'High Risk' = 'Safe';
+      if (maxOver >= 1.5 || numAbove >= 2) {
+        riskLevel = 'High Risk';
+      } else if (numAbove === 1 || maxOver > 1) {
+        riskLevel = 'Moderate';
+      }
+      return { id: a.id, riskLevel };
+    });
+    return { results };
+  }
   return categorizePollutionRiskFlow(input);
 }
 

@@ -7,7 +7,18 @@ import { getStorage } from "firebase/storage";
 
 let app: FirebaseApp | undefined;
 
+// Detect whether Firebase is properly configured via env vars.
+export const firebaseEnabled = Boolean(
+  process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
+  process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN &&
+  process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID &&
+  process.env.NEXT_PUBLIC_FIREBASE_APP_ID
+);
+
 export function getFirebaseApp(): FirebaseApp {
+  if (!firebaseEnabled) {
+    throw new Error("Firebase is not configured. Add keys to .env.local.");
+  }
   if (!app) {
     const config = {
       apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY as string,

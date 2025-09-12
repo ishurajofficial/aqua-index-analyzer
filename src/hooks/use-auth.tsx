@@ -3,7 +3,7 @@
 import React from "react";
 import { onAuthStateChanged, signInWithPopup, signOut, User } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
-import { firebaseAuth, googleProvider, db } from "@/lib/firebase";
+import { firebaseAuth, googleProvider, db, firebaseEnabled } from "@/lib/firebase";
 
 type Role = "admin" | "researcher" | "guest";
 
@@ -23,6 +23,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
+    if (!firebaseEnabled) {
+      setUser(null);
+      setRole("guest");
+      setLoading(false);
+      return;
+    }
     const auth = firebaseAuth();
     const unsubscribe = onAuthStateChanged(auth, async current => {
       setUser(current);
@@ -43,10 +49,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signInWithGoogle = React.useCallback(async () => {
+    if (!firebaseEnabled) return;
     await signInWithPopup(firebaseAuth(), googleProvider);
   }, []);
 
   const signOutUser = React.useCallback(async () => {
+    if (!firebaseEnabled) return;
     await signOut(firebaseAuth());
   }, []);
 

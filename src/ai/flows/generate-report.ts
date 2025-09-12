@@ -9,7 +9,7 @@
  * - GenerateReportOutput - The return type for the generateReport function.
  */
 
-import {ai} from '@/ai/genkit';
+import {ai, aiEnabled} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const GenerateReportInputSchema = z.object({
@@ -39,6 +39,21 @@ export type GenerateReportOutput = z.infer<typeof GenerateReportOutputSchema>;
 export async function generateReport(
   input: GenerateReportInput
 ): Promise<GenerateReportOutput> {
+  if (!aiEnabled) {
+    // Simple local markdown fallback
+    const data = JSON.parse(input.processedData || '[]');
+    const lines = [
+      `# Aqua Index Analysis Report`,
+      `\n**Standard:** ${input.selectedStandard}`,
+      `\n## Executive Summary`,
+      input.summary || 'No summary available.',
+      `\n## Sample Data`,
+      `| Location | HPI | HEI | PLI | Risk |`,
+      `|---|---:|---:|---:|---|`,
+      ...data.slice(0, 50).map((d:any)=>`| ${d.location} | ${d.hpi?.toFixed?.(2) ?? '-'} | ${d.hei?.toFixed?.(2) ?? '-'} | ${d.pli?.toFixed?.(2) ?? '-'} | ${d.risk ?? '-'} |`)
+    ];
+    return { report: lines.join('\n') };
+  }
   return generateReportFlow(input);
 }
 

@@ -9,7 +9,7 @@
  * - SummarizeDatasetInsightsOutput - The return type for the summarizeDatasetInsights function.
  */
 
-import {ai} from '@/ai/genkit';
+import {ai, aiEnabled} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const SummarizeDatasetInsightsInputSchema = z.object({
@@ -47,6 +47,17 @@ export type SummarizeDatasetInsightsOutput = z.infer<
 export async function summarizeDatasetInsights(
   input: SummarizeDatasetInsightsInput
 ): Promise<SummarizeDatasetInsightsOutput> {
+  if (!aiEnabled) {
+    // Simple heuristic fallback summary
+    const indices = JSON.parse(input.calculatedIndices || '[]');
+    const total = indices.length;
+    const high = indices.filter((d:any)=>d.risk === 'High Risk').length;
+    const moderate = indices.filter((d:any)=>d.risk === 'Moderate').length;
+    const low = indices.filter((d:any)=>d.risk === 'Safe').length;
+    return {
+      summary: `Analyzed ${total} locations. High risk: ${high}. Moderate: ${moderate}. Low: ${low}. Focus mitigation on high-risk sites and monitor moderate locations.`
+    };
+  }
   return summarizeDatasetInsightsFlow(input);
 }
 
