@@ -1,0 +1,11 @@
+Location,Latitude,Longitude,As,Cd,Cr,Pb,Zn,Status
+Critical Site 1,28.6000,77.2000,0.150,0.080,0.200,0.120,0.300,Extremely High Risk
+Critical Site 2,28.6010,77.2010,0.120,0.060,0.180,0.100,0.250,Very High Risk
+High Risk Site 1,28.6020,77.2020,0.080,0.040,0.120,0.070,0.180,High Risk
+High Risk Site 2,28.6030,77.2030,0.070,0.035,0.100,0.060,0.160,High Risk
+Moderate Site 1,28.6040,77.2040,0.040,0.020,0.060,0.035,0.090,Moderate Risk
+Moderate Site 2,28.6050,77.2050,0.030,0.015,0.045,0.025,0.070,Moderate Risk
+Safe Site 1,28.6060,77.2060,0.010,0.005,0.015,0.008,0.025,Low Risk
+Safe Site 2,28.6070,77.2070,0.005,0.002,0.008,0.004,0.015,Low Risk
+Clean Site 1,28.6080,77.2080,0.002,0.001,0.003,0.001,0.005,Very Low Risk
+Clean Site 2,28.6090,77.2090,0.001,0.0005,0.002,0.0008,0.003,Minimal Risk

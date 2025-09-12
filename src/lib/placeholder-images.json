@@ -1,0 +1,11 @@
+
+{
+  "placeholderImages": [
+    {
+      "id": "map-placeholder",
+      "description": "A placeholder image for the map visualization.",
+      "imageUrl": "https://picsum.photos/seed/map1/1200/800",
+      "imageHint": "world map satellite"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+Location,Latitude,Longitude,As,Cd,Cr,Pb,Zn,Notes
+Delhi Industrial Zone,28.6139,77.2090,0.025,0.008,0.045,0.012,0.085,High traffic area
+Mumbai Residential,19.0760,72.8777,0.015,0.003,0.025,0.008,0.045,Urban residential
+Bangalore Agricultural,12.9716,77.5946,0.008,0.002,0.015,0.005,0.025,Farm irrigation
+Chennai Commercial,13.0827,80.2707,0.035,0.012,0.065,0.018,0.095,Business district
+Kolkata Highway,22.5726,88.3639,0.042,0.015,0.075,0.022,0.105,Heavy vehicle traffic
+Hyderabad Rural,17.3850,78.4867,0.005,0.001,0.008,0.003,0.015,Remote village
+Pune Urban Center,18.5204,73.8567,0.028,0.009,0.055,0.015,0.075,City center
+Ahmedabad Industrial,23.0225,72.5714,0.055,0.020,0.095,0.035,0.125,Manufacturing hub
+Jaipur Suburban,26.9124,75.7873,0.012,0.004,0.020,0.006,0.035,Residential suburb
+Lucknow River Bank,26.8467,80.9462,0.018,0.006,0.030,0.009,0.055,Near water source
+Shimla Mountain,31.1048,77.1734,0.003,0.001,0.005,0.002,0.008,Hill station
+Goa Coastal,15.2993,74.1240,0.022,0.007,0.040,0.011,0.065,Beach area
+Ranchi Mining,23.3441,85.3096,0.065,0.025,0.110,0.045,0.155,Coal mining region
+Dehradun Forest,30.3165,78.0322,0.002,0.001,0.003,0.001,0.005,Protected forest
+Chandigarh Campus,30.7333,76.7794,0.010,0.003,0.018,0.005,0.028,Educational area
+Bhopal Hospital,23.2599,77.4126,0.020,0.006,0.035,0.010,0.050,Medical complex
+Indore Shopping,22.7196,75.8577,0.025,0.008,0.045,0.012,0.070,Commercial mall
+Vadodara Airport,22.3072,73.1812,0.030,0.010,0.050,0.014,0.080,Aviation zone
+Surat Power Plant,21.1702,72.8311,0.045,0.018,0.080,0.025,0.110,Thermal plant
+Nashik Treatment,19.9975,73.7898,0.008,0.002,0.012,0.004,0.020,Water facility
