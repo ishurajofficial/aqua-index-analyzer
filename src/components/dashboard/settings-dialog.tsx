@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTheme } from "@/hooks/use-theme";
 import {
   Dialog,
   DialogContent,
@@ -38,40 +39,27 @@ interface SettingsDialogProps {
   children: React.ReactNode;
 }
 
-export function SettingsDialog({ children }: SettingsDialogProps) {
   const { user, role } = useAuth();
+  const { theme, setTheme } = useTheme();
   const [open, setOpen] = useState(false);
-  
-  // Settings state
+  // Settings state (except theme)
   const [settings, setSettings] = useState({
-    // Theme settings
-    theme: 'system' as 'light' | 'dark' | 'system',
-    
-    // Display settings
     chartType: 'bar' as 'bar' | 'line' | 'radar',
     showGridLines: true,
     showDataLabels: true,
     animationSpeed: 0.5,
-    
-    // Notification settings
     emailNotifications: true,
     pushNotifications: false,
     reportReadyAlerts: true,
     dataProcessingAlerts: true,
-    
-    // Export settings
     defaultFormat: 'markdown' as 'markdown' | 'csv' | 'json' | 'pdf',
     autoDownload: false,
     includeMetadata: true,
     compressionLevel: 5,
-    
-    // Data settings
     autoSave: true,
     dataRetention: 30, // days
     maxFileSize: 10, // MB
     batchSize: 100,
-    
-    // Security settings
     sessionTimeout: 60, // minutes
     requireAuth: true,
     dataEncryption: true,
@@ -82,8 +70,8 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
   };
 
   const resetSettings = () => {
+    setTheme('system');
     setSettings({
-      theme: 'system',
       chartType: 'bar',
       showGridLines: true,
       showDataLabels: true,
@@ -109,6 +97,7 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
   const saveSettings = () => {
     // Save to localStorage or backend
     localStorage.setItem('aqua-index-settings', JSON.stringify(settings));
+    localStorage.setItem('aqua-index-theme', theme);
     setOpen(false);
   };
 
@@ -141,7 +130,7 @@ export function SettingsDialog({ children }: SettingsDialogProps) {
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <Label>Theme</Label>
-                <Select value={settings.theme} onValueChange={(value) => updateSetting('theme', value)}>
+                <Select value={theme} onValueChange={(value) => setTheme(value as 'light' | 'dark' | 'system')}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
