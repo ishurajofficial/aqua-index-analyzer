@@ -4,10 +4,6 @@ import { AuthProvider } from '@/hooks/use-auth';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 
-export const metadata: Metadata = {
-  title: 'Aqua Index Analyzer',
-  description: 'An application to compute Heavy Metal Pollution Indices (HMPI) in groundwater.',
-};
 
 export default function RootLayout({
   children,
