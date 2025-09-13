@@ -1,7 +1,6 @@
 import type {Metadata} from 'next';
 import './globals.css';
 import { AuthProvider } from '@/hooks/use-auth';
-import { ThemeProvider } from '@/hooks/use-theme';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 
@@ -23,12 +22,10 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Source+Code+Pro&display=swap" rel="stylesheet" />
       </head>
       <body className={cn('font-body antialiased')}>
-        <ThemeProvider>
-          <AuthProvider>
-            {children}
-            <Toaster />
-          </AuthProvider>
-        </ThemeProvider>
+        <AuthProvider>
+          {children}
+          <Toaster />
+        </AuthProvider>
       </body>
     </html>
   );

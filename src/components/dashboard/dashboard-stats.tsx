@@ -40,9 +40,9 @@ export function DashboardStats({ data, loading }: DashboardStatsProps) {
   }
 
   const totalSamples = data.length;
-  const highRiskSamples = data.filter(d => d.risk === 'High').length;
+  const highRiskSamples = data.filter(d => d.risk === 'High Risk').length;
   const moderateRiskSamples = data.filter(d => d.risk === 'Moderate').length;
-  const safeSamples = data.filter(d => d.risk === 'Low').length;
+  const safeSamples = data.filter(d => d.risk === 'Safe').length;
   
   const highRiskPercentage = totalSamples > 0 ? (highRiskSamples / totalSamples) * 100 : 0;
   const moderateRiskPercentage = totalSamples > 0 ? (moderateRiskSamples / totalSamples) * 100 : 0;

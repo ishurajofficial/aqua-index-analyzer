@@ -35,10 +35,11 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 
-interface SettingsDialogProps {
+type SettingsDialogProps = {
   children: React.ReactNode;
-}
+};
 
+export function SettingsDialog({ children }: SettingsDialogProps) {
   const { user, role } = useAuth();
   const { theme, setTheme } = useTheme();
   const [open, setOpen] = useState(false);
@@ -178,6 +179,7 @@ interface SettingsDialogProps {
                   onCheckedChange={(checked) => updateSetting('showGridLines', checked)}
                 />
               </div>
+// ...existing code...
 
               <div className="flex items-center justify-between">
                 <Label>Show Data Labels</Label>

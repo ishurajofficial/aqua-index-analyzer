@@ -88,7 +88,8 @@ export function DashboardControls({
                                 const errors: string[] = [];
                                 const entry: any = {
                                     id: row.id ? Number(row.id) : index + 1,
-                                    location: row.location || `Location ${index + 1}`,
+                                    // Use 'location' (lowercase) or 'Location' (capitalized) from CSV, fallback to generic if missing
+                                    location: row.location || row.Location || `Location ${index + 1}`,
                                     lat: Number(row.lat) || 0,
                                     lon: Number(row.lon) || 0,
                                 };

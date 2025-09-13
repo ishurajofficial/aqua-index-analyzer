@@ -102,6 +102,7 @@ export function ResultsTable({ data, onRowClick, selectedRowId }: ResultsTablePr
                 </TableHead>
                 <TableHead className="text-right">HEI</TableHead>
                 <TableHead className="text-right">PLI</TableHead>
+                <TableHead className="text-right">Avg CF</TableHead>
                 <TableHead className="text-center">
                    <Button variant="ghost" onClick={() => requestSort("risk")}>
                     Risk Level
@@ -124,6 +125,11 @@ export function ResultsTable({ data, onRowClick, selectedRowId }: ResultsTablePr
                   </TableCell>
                   <TableCell className="text-right">
                     {item.pli.toFixed(1)}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {(
+                      (item.cf.As + item.cf.Cd + item.cf.Cr + item.cf.Pb + item.cf.Zn) / 5
+                    ).toFixed(2)}
                   </TableCell>
                   <TableCell className="text-center">
                     <Badge

@@ -140,6 +140,7 @@ export function ComparisonTool({ data }: ComparisonToolProps) {
                       <th className="text-center p-2">HPI</th>
                       <th className="text-center p-2">HEI</th>
                       <th className="text-center p-2">PLI</th>
+                      <th className="text-center p-2">Avg CF</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -149,6 +150,14 @@ export function ComparisonTool({ data }: ComparisonToolProps) {
                         <td className="text-center p-2">
                           <Badge variant={sample.hpi > 100 ? 'destructive' : sample.hpi > 50 ? 'secondary' : 'default'}>
                             {sample.hpi.toFixed(2)}
+                          </Badge>
+                        </td>
+                        <td className="text-center p-2">
+                          <Badge variant={(() => {
+                            const avgCf = (sample.cf.As + sample.cf.Cd + sample.cf.Cr + sample.cf.Pb + sample.cf.Zn) / 5;
+                            return avgCf > 3 ? 'destructive' : avgCf > 1 ? 'secondary' : 'default';
+                          })()}>
+                            {((sample.cf.As + sample.cf.Cd + sample.cf.Cr + sample.cf.Pb + sample.cf.Zn) / 5).toFixed(2)}
                           </Badge>
                         </td>
                         <td className="text-center p-2">
@@ -214,6 +223,7 @@ export function ComparisonTool({ data }: ComparisonToolProps) {
                       <div>HPI: {sample.hpi.toFixed(2)}</div>
                       <div>HEI: {sample.hei.toFixed(2)}</div>
                       <div>PLI: {sample.pli.toFixed(2)}</div>
+                      <div>Avg CF: {((sample.cf.As + sample.cf.Cd + sample.cf.Cr + sample.cf.Pb + sample.cf.Zn) / 5).toFixed(2)}</div>
                     </div>
                   </div>
                 ))}

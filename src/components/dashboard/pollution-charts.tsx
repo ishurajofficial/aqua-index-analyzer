@@ -58,9 +58,15 @@ const chartConfig = {
   Zn: { label: "Zinc (Zn)", color: "hsl(var(--chart-5))" },
 };
 
-const indexKeys = ["hpi", "hei", "pli"] as const;
+const indexKeys = ["hpi", "hei", "pli", "cf"] as const;
 const metalKeys = ["As", "Cd", "Cr", "Pb", "Zn"] as const;
 type IndexKey = typeof indexKeys[number];
+// Helper to get average CF for a PollutionData sample
+function getAvgCF(sample: PollutionData) {
+  return sample && sample.cf
+    ? (sample.cf.As + sample.cf.Cd + sample.cf.Cr + sample.cf.Pb + sample.cf.Zn) / 5
+    : 0;
+}
 type MetalKey = typeof metalKeys[number];
 
 export function PollutionCharts({ data, selectedLocation }: PollutionChartsProps) {
@@ -82,26 +88,38 @@ export function PollutionCharts({ data, selectedLocation }: PollutionChartsProps
 
   // Data for charts
   const radarChartData = selectedLocation
-    ? selectedIndices.map((key) => ({
-        index: chartConfig[key].label,
-        value: selectedLocation[key],
-        fullMark:
-          key === "hpi"
-            ? 250
-            : key === "hei"
-            ? 60
-            : key === "pli"
-            ? 5
-            : 100,
-      }))
+    ? selectedIndices.map((key) => {
+        let value = 0;
+        if (key === "cf") {
+          value = getAvgCF(selectedLocation);
+        } else {
+          value = selectedLocation[key];
+        }
+        return {
+          index: key === "cf" ? "Avg CF" : chartConfig[key].label,
+          value,
+          fullMark:
+            key === "hpi"
+              ? 250
+              : key === "hei"
+              ? 60
+              : key === "pli"
+              ? 5
+              : key === "cf"
+              ? 5
+              : 100,
+        };
+      })
     : [];
 
-  const lineChartData = selectedLocation
-    ? selectedMetals.map((metal) => ({
-        metal,
-        concentration: selectedLocation[metal],
-      }))
-    : [];
+  // For the metals chart, show all locations for the selected metal(s)
+  const metalsChartData = data.map((sample) => {
+    const entry: any = { location: sample.location };
+    selectedMetals.forEach((metal) => {
+      entry[metal] = sample[metal];
+    });
+    return entry;
+  });
 
   return (
     <Card>
@@ -124,7 +142,7 @@ export function PollutionCharts({ data, selectedLocation }: PollutionChartsProps
                     onCheckedChange={() => handleIndexChange(key)}
                     id={`index-${key}`}
                   />
-                  {chartConfig[key].label}
+                  {key === 'cf' ? 'Avg CF' : chartConfig[key].label}
                 </Label>
               ))}
             </div>
@@ -167,15 +185,25 @@ export function PollutionCharts({ data, selectedLocation }: PollutionChartsProps
                   <Tooltip cursor={false} content={<ChartTooltipContent />} />
                   <Legend />
                   {/* Show selected indices as bars */}
-                  {selectedIndices.map((key) => (
-                    <Bar
-                      key={key}
-                      dataKey={key}
-                      fill={chartConfig[key].color}
-                      radius={4}
-                      name={chartConfig[key].label}
-                    />
-                  ))}
+                  {selectedIndices.map((key) =>
+                    key === "cf" ? (
+                      <Bar
+                        key="cf"
+                        dataKey={(d: PollutionData) => getAvgCF(d)}
+                        fill="hsl(var(--chart-4))"
+                        radius={4}
+                        name="Avg CF"
+                      />
+                    ) : (
+                      <Bar
+                        key={key}
+                        dataKey={key}
+                        fill={chartConfig[key].color}
+                        radius={4}
+                        name={chartConfig[key].label}
+                      />
+                    )
+                  )}
                 </BarChart>
               </ChartContainer>
             </div>
@@ -196,14 +224,14 @@ export function PollutionCharts({ data, selectedLocation }: PollutionChartsProps
           </TabsContent>
           <TabsContent value="metals">
             <div className="h-[300px] w-full pt-4">
-               <p className="text-sm font-medium text-center mb-2">{selectedLocation?.location} - Metal Concentrations (mg/L)</p>
+               <p className="text-sm font-medium text-center mb-2">Metal Concentrations (mg/L) by Location</p>
                <ChartContainer config={chartConfig} className="w-full h-full">
                  <LineChart
-                    data={lineChartData}
+                    data={metalsChartData}
                     margin={{ top: 5, right: 20, left: -10, bottom: 0 }}
                     >
                     <CartesianGrid vertical={false} />
-                    <XAxis dataKey="metal" />
+                    <XAxis dataKey="location" />
                     <YAxis />
                     <Tooltip content={<ChartTooltipContent />} />
                     <Legend />
@@ -212,7 +240,7 @@ export function PollutionCharts({ data, selectedLocation }: PollutionChartsProps
                       <Line
                         key={key}
                         type="monotone"
-                        dataKey="concentration"
+                        dataKey={key}
                         stroke={chartConfig[key].color}
                         strokeWidth={2}
                         name={chartConfig[key].label}
