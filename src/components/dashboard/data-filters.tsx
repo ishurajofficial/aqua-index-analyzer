@@ -92,9 +92,9 @@ export function DataFilters({ data, onFilteredData }: DataFiltersProps) {
   const getRiskCounts = () => {
     const counts = {
       all: data.length,
-      High: data.filter(d => d.risk === 'High').length,
+      "High Risk": data.filter(d => d.risk === 'High Risk').length,
       Moderate: data.filter(d => d.risk === 'Moderate').length,
-      Low: data.filter(d => d.risk === 'Low').length
+      Safe: data.filter(d => d.risk === 'Safe').length
     };
     return counts;
   };
@@ -157,10 +157,10 @@ export function DataFilters({ data, onFilteredData }: DataFiltersProps) {
                 <SelectItem value="all">
                   All ({riskCounts.all})
                 </SelectItem>
-                <SelectItem value="High">
+                <SelectItem value="High Risk">
                   <div className="flex items-center gap-2">
                     <AlertTriangle className="h-4 w-4 text-red-500" />
-                    High Risk ({riskCounts.High})
+                    High Risk ({riskCounts["High Risk"]})
                   </div>
                 </SelectItem>
                 <SelectItem value="Moderate">
@@ -169,10 +169,10 @@ export function DataFilters({ data, onFilteredData }: DataFiltersProps) {
                     Moderate Risk ({riskCounts.Moderate})
                   </div>
                 </SelectItem>
-                <SelectItem value="Low">
+                <SelectItem value="Safe">
                   <div className="flex items-center gap-2">
                     <CheckCircle className="h-4 w-4 text-green-500" />
-                    Low Risk ({riskCounts.Low})
+                    Safe ({riskCounts.Safe})
                   </div>
                 </SelectItem>
               </SelectContent>

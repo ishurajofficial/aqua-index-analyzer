@@ -26,7 +26,7 @@ export function DashboardHeader() {
       <div className="flex items-center gap-3">
         <SidebarTrigger className="md:hidden" />
         <h1 className="text-lg font-semibold text-foreground">
-          Aqua Index Analyzer
+          Dashboard
         </h1>
       </div>
 
