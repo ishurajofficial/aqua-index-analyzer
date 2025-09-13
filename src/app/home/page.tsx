@@ -372,7 +372,7 @@ export default function HomePage() {
           </div>
           <Separator className="my-8 bg-gray-800" />
           <div className="text-center text-gray-400">
-            <p>&copy; 2024 Aqua Index Analyzer. Built for environmental research and public health protection.</p>
+            <p>&copy; 2025 Aqua Index Analyzer. Built for environmental research and public health protection.</p>
           </div>
         </div>
       </footer>
